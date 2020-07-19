@@ -1,44 +1,24 @@
-package br.com.tokiomarine.seguradora.avaliacao.entidade;
+package br.com.tokiomarine.seguradora.avaliacao.dto;
 
-import javax.persistence.*;
+import br.com.tokiomarine.seguradora.avaliacao.entidade.Estudante;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Entity
-public class Estudante {
-	// TODO Implementar a entidade Estudante conforme solicitado
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NotNull(message = "Nome é obrigatório")
-    @NotEmpty(message = "Nome é obrigatório")
-    @Column(nullable = false)
+public class EstudanteCreateDTO {
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotNull(message = "Email é obrigatório")
-    @NotEmpty(message = "Email é obrigatório")
-    @Column(nullable = false)
+    @NotBlank(message = "Email é obrigatório")
     private String email;
 
-    @Column()
     private String telefone;
 
-    @NotNull(message = "Matrícula é obrigatória")
-    @NotEmpty(message = "Matrícula é obrigatória")
-    @Column(nullable = false)
+    @NotBlank(message = "Matrícula é obrigatória")
     private String matricula;
 
-    @Column()
     private String curso;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -78,5 +58,15 @@ public class Estudante {
 
     public void setCurso(String curso) {
         this.curso = curso;
+    }
+
+    public Estudante toEstudante() {
+        Estudante e = new Estudante();
+        e.setNome(this.nome);
+        e.setEmail(this.email);
+        e.setMatricula(this.matricula);
+        e.setCurso(this.curso);
+
+        return e;
     }
 }

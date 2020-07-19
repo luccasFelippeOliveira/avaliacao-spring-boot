@@ -1,35 +1,49 @@
 package br.com.tokiomarine.seguradora.avaliacao.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import br.com.tokiomarine.seguradora.avaliacao.entidade.Estudante;
 import br.com.tokiomarine.seguradora.avaliacao.repository.EstudanteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// TODO Efetue a implementação dos métodos da classe service
-public class EstudanteServiceImpl implements EstudandeService {
+@Service
+public class EstudanteServiceImpl implements EstudanteService {
 
-	EstudanteRepository repository;
+	@Autowired
+	private EstudanteRepository repository;
 
 	@Override
-	public void cadastrarEstudante(@Valid Estudante estudante) {
-
+	public Estudante cadastrarEstudante(@Valid Estudante estudante) {
+		return this.repository.save(estudante);
 	}
 
 	@Override
 	public void atualizarEstudante(@Valid Estudante estudante) {
-
+		this.repository.save(estudante);
 	}
 
 	@Override
 	public List<Estudante> buscarEstudantes() {
-		return null;
+		return (List<Estudante>) this.repository.findAll();
 	}
 
 	@Override
 	public Estudante buscarEstudante(long id) {
-		throw new IllegalArgumentException("Identificador inválido:" + id);
+		Optional<Estudante> optional = this.repository.findById(id);
+		if (optional.isPresent()) {
+			return optional.get();
+		} else {
+			throw new RuntimeException("Estudante não encontrado com o id: " + id);
+		}
+	}
+
+	@Override
+	public void removerEstudante(long id) {
+		this.repository.deleteById(id);
 	}
 
 }
